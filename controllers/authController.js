@@ -87,7 +87,7 @@ exports.loginUser = async (req, res) => {
     // 2) Check if user exists && password is correct
     const user = await User.findOne({ companyId }).select('+password'); // Explicitly select password
 
-    if (!user || !(await user.comparePassword(password))) {
+    if (!user || user.password !== password) { // Compare plaintext passwords
       return res.status(401).json({ message: 'Incorrect Company ID or password.' });
     }
 
@@ -150,6 +150,70 @@ exports.protect = async (req, res, next) => {
     }
     console.error('Auth Protect Error:', error);
     res.status(401).json({ message: 'Authentication failed. Please log in again.', error: error.message });
+  }
+};
+
+// Controller for changing user password
+exports.changePassword = async (req, res) => {
+  try {
+    // 1) Get user from the collection (req.user is set by the protect middleware)
+    const user = await User.findById(req.user.id).select('+password');
+    if (!user) {
+      return res.status(404).json({ message: 'User not found.' });
+    }
+
+    // 2) Get passwords from body
+    const { currentPassword, newPassword, newPasswordConfirm } = req.body;
+
+    // 3) Check if currentPassword is correct
+    if (user.password !== currentPassword) {
+      return res.status(401).json({ message: 'Incorrect current password.' });
+    }
+
+    // 4) Check if newPassword and newPasswordConfirm are the same
+    if (newPassword !== newPasswordConfirm) {
+      return res.status(400).json({ message: 'New password and confirmation do not match.' });
+    }
+
+    // 5) Check if newPassword is different from old password
+    if (newPassword === currentPassword) {
+      return res.status(400).json({ message: 'New password must be different from the current password.' });
+    }
+    
+    // 6) Basic validation for new password length (align with schema if needed)
+    if (!newPassword || newPassword.length < 3) { // Assuming minlength is 3 from User model
+        return res.status(400).json({ message: 'New password must be at least 3 characters long.' });
+    }
+
+    // 7) Update password
+    user.password = newPassword;
+    await user.save(); // This will now save the plaintext password directly
+
+    // 8) Log user in again, send JWT
+    const token = signToken({
+      id: user._id,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      companyId: user.companyId,
+      role: user.role
+    });
+
+    res.status(200).json({
+      status: 'success',
+      token,
+      message: 'Password changed successfully.'
+    });
+
+  } catch (error) {
+    console.error('Change Password Error:', error);
+    if (error.name === 'ValidationError') {
+        const messages = Object.values(error.errors).map(val => val.message);
+        return res.status(400).json({ 
+          message: 'Validation Error updating password.', 
+          errors: messages 
+        });
+      }
+    res.status(500).json({ message: 'Error changing password. Please try again later.', error: error.message });
   }
 };
 

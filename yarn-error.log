@@ -1,0 +1,54 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Users\IT-GLENSONR\AppData\Roaming\npm\node_modules\yarn\bin\yarn.js
+
+PATH: 
+  C:\Program Files (x86)\VMware\VMware Workstation\bin\;C:\Python313\Scripts\;C:\Python313\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\Docker\Docker\resources\bin;C:\Program Files\Git\cmd;C:\Program Files\MongoDB\Tools\100\bin;C:\Program Files\nodejs\;C:\ProgramData\chocolatey\bin;C:\Program Files\dotnet\;C:\Users\IT-GLENSONR\AppData\Local\Microsoft\WindowsApps;C:\Users\IT-GLENSONR\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\IT-GLENSONR\AppData\Roaming\npm;C:\Program Files\MongoDB\Tools\100\bin;C:\Program Files (x86)\Nmap;C:\Users\IT-GLENSONR\AppData\Local\Programs\Windsurf\bin
+
+Yarn version: 
+  1.22.19
+
+Node version: 
+  18.20.6
+
+Platform: 
+  win32 x64
+
+Trace: 
+  Error: EPERM: operation not permitted, unlink 'C:\Users\IT-GLENSONR\AppData\Local\Yarn\Cache\v6\npm-debug-3.2.7-72580b7e9145fb39b6676f9c5e5fb100b934179a-integrity\node_modules\debug\.yarn-tarball.tgz'
+
+npm manifest: 
+  {
+    "name": "pemco-election-server",
+    "version": "1.0.0",
+    "description": "Backend for PEMCO Cooperative Election Application",
+    "main": "server.js",
+    "scripts": {
+      "start": "node server.js",
+      "dev": "nodemon server.js"
+    },
+    "keywords": [
+      "election",
+      "mern",
+      "api"
+    ],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+      "bcryptjs": "^2.4.3",
+      "cors": "^2.8.5",
+      "express": "^4.18.2",
+      "express-async-handler": "^1.2.0",
+      "jsonwebtoken": "^9.0.0",
+      "mongoose": "^7.0.0",
+      "multer": "^1.4.5-lts.1"
+    },
+    "devDependencies": {
+      "nodemon": "^2.0.20"
+    }
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile

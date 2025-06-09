@@ -1,7 +1,7 @@
 // server/services/electionState.js
 
-let isVotingOpen = true; // Default: Voting is open when the server starts
-let isRegistrationOpen = true; // Default: Registration is open when the server starts
+let isVotingOpen = false; // Default: Voting is closed when the server starts
+let isRegistrationOpen = false; // Default: Registration is closed when the server starts
 
 /**
  * Gets the current voting status.

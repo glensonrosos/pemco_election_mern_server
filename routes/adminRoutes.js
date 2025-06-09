@@ -1,6 +1,11 @@
 const express = require('express');
 const adminController = require('../controllers/adminController');
 const authController = require('../controllers/authController'); // For route protection
+const multer = require('multer');
+
+// Configure multer for file uploads (in-memory storage)
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const router = express.Router();
 
@@ -30,6 +35,18 @@ router.post('/enable-registration', adminController.enableRegistration);
 // POST /api/admin/disable-registration
 router.post('/disable-registration', adminController.disableRegistration);
 
+
+// GET /api/admin/export-voters - Admin exports voters to Excel
+router.get('/export-voters', adminController.exportVoters);
+
+// GET /api/admin/export-admins - Admin exports admin users to Excel
+router.get('/export-admins', adminController.exportAdminUsers);
+
+// POST /api/admin/import-voters - Admin imports voters from Excel
+router.post('/import-voters', upload.single('votersFile'), adminController.importVoters);
+
+// DELETE /api/admin/delete-all-voters - Admin deletes all voters (users with role 'user')
+router.delete('/delete-all-voters', adminController.deleteAllVoters);
 
 // TODO: Add route for admin dashboard statistics if needed
 
